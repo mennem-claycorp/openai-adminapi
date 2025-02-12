@@ -2,6 +2,7 @@ import requests
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import json
 
 # Load environment variables from the root .env file
 BASE_DIR = Path(__file__).resolve().parent.parent  # Go up one level to reach the root
@@ -10,7 +11,7 @@ load_dotenv(ENV_PATH)
 
 # Set your OpenAI API key here
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")  # Use environment variable for security
-print(f"api key: {OPENAI_API_KEY}")
+# print(f"api key: {OPENAI_API_KEY}")
 
 # OpenAI API endpoint for audit logs
 AUDIT_LOGS_URL = "https://api.openai.com/v1/organization/audit_logs"
@@ -41,8 +42,8 @@ def fetch_audit_logs(limit=10):
         results.extend(data.get("data", []))
 
         # Print a preview of the JSON response
-        print(f"Page {_ + 1}:")
-        print(data.get("data", [])[:3])  # Print the first 3 entries as a preview
+        # print(f"Page {_ + 1}:")
+        print(json.dumps(data.get("data", [])))  # Print the first 3 entries as a preview
 
         # Get pagination cursor
         next_cursor = data.get("paging", {}).get("after")
@@ -54,6 +55,6 @@ def fetch_audit_logs(limit=10):
 
 if __name__ == "__main__":
     logs = fetch_audit_logs()
-    if logs:
-        print(f"Total logs retrieved: {len(logs)}")
+    # if logs:
+        # print(f"Total logs retrieved: {len(logs)}")
 
